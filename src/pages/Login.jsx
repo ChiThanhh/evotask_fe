@@ -1,5 +1,5 @@
-import React from "react"
-import { Button } from "@/components/ui/button"
+import React from "react";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -8,14 +8,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { login } from "@/services/AuthService"
-import { toast } from "sonner"
-import { useNavigate } from "react-router-dom"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { login } from "@/services/AuthService";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
-export default function Login({ onSwitch }) {
+export default function Login({ onSwitch, setIsLoggedIn }) {
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +31,7 @@ export default function Login({ onSwitch }) {
       const token = response.token;
       localStorage.setItem("data", JSON.stringify(response));
       localStorage.setItem("token", token);
+      setIsLoggedIn(true); // trigger re-render
       navigate("/dashboard");
       toast.success("Đăng nhập thành công!");
     } catch (error) {
@@ -46,11 +47,16 @@ export default function Login({ onSwitch }) {
             Nhập email của bạn bên dưới để đăng nhập vào tài khoản của bạn
           </CardDescription>
           <CardAction>
-            <Button className="cursor-pointer" variant="link" onClick={onSwitch}>Đăng ký</Button>
+            <Button
+              className="cursor-pointer"
+              variant="link"
+              onClick={onSwitch}
+            >
+              Đăng ký
+            </Button>
           </CardAction>
         </CardHeader>
         <form onSubmit={handleSubmit}>
-
           <CardContent>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
@@ -73,22 +79,26 @@ export default function Login({ onSwitch }) {
                     Quên mật khẩu?
                   </a>
                 </div>
-                <Input id="password" name="password" type="password" placeholder="******"
-                  required />
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="******"
+                  required
+                />
               </div>
             </div>
-
           </CardContent>
           <CardFooter className="flex-col gap-2 mt-8">
-            <Button type="submit" className="w-full" >
+            <Button type="submit" className="w-full cursor-pointer">
               Đăng nhập
             </Button>
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full cursor-pointer">
               Đăng nhập với Google
             </Button>
           </CardFooter>
         </form>
       </Card>
     </div>
-  )
+  );
 }

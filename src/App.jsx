@@ -4,13 +4,12 @@ import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 import './App.css';
 function App() {
-  const isLoggedIn = localStorage.getItem("token"); 
-
+  const [isLoggedIn, setIsLoggedIn] = React.useState(!!localStorage.getItem("token")); 
   return (
     <Router>
       <div className='h-screen bg-background'>
         <Routes>
-          <Route path="/auth" element={<Auth />} />
+          <Route path="/auth" element={<Auth setIsLoggedIn={setIsLoggedIn} />} />
           <Route
             path="/dashboard"
             element={isLoggedIn ? <Dashboard /> : <Navigate to="/auth" />}
